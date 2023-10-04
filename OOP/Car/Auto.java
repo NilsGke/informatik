@@ -69,9 +69,7 @@ public class Auto {
   }
 
   public double aktuellerVerbrauch(double Strecke, double Menge) {
-    // Aufgabe: Implementiere eine Funktion aktuellerVerbrauch(double Strecke, double Menge) die aus Strecke und Menge den Verbrauch berechnet.
-    // was wollen die hier?
-    return Strecke * Menge; // ?
+    return (double) 100 / Menge * Strecke;
   }
 
   public void langeStreckeFahren(double Strecke) {
