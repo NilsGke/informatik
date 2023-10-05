@@ -18,6 +18,10 @@ public class Auto {
     return Kennzeichen;
   }
 
+  public double getVerbrauch() {
+    return Verbrauch;
+  }  
+
   public double getKilometerstand() {
     return Kilometerstand;
   }
@@ -25,13 +29,17 @@ public class Auto {
   public double getTankinhalt() {
     return Tankinhalt;
   }
+  
+  public double getTankvolumen() {
+    return Tankvolumen;
+  }
 
   public void tanken(double Menge) {
     if (Menge > this.Tankvolumen - this.Tankinhalt) {
       System.out.println(
         "Du hast " +
         (Menge - this.Tankvolumen - this.Tankinhalt) +
-        " Liter zu viel getankt 🤨"
+        " Liter zu viel getankt ??"
       );
       this.Tankinhalt = this.Tankvolumen;
     } else {
@@ -50,13 +58,13 @@ public class Auto {
   public void fahren(double Strecke) {
     double VerbrauchFuerStrecke = Strecke * (this.Verbrauch / 100);
 
-    System.out.print("Brrrrrrrrrrrrr 🚗");
+    System.out.print("Brrrrrrrrrrrrr ??");
 
     if (VerbrauchFuerStrecke > this.Tankinhalt) {
       Strecke = this.Tankinhalt / (this.Verbrauch / 100);
       this.Kilometerstand += Strecke;
       this.Tankinhalt = 0;
-      System.out.println("Die Strecke war zu lang, dein Tank ist nun leer 😯");
+      System.out.println("Die Strecke war zu lang, dein Tank ist nun leer ??");
     } else {
       this.Kilometerstand += Strecke;
       this.Tankinhalt -= VerbrauchFuerStrecke;
@@ -89,6 +97,6 @@ public class Auto {
       }
     }
 
-    System.out.println("du musstest " + Tankpausen + " mal tanken ⛽");
+    System.out.println("du musstest " + Tankpausen + " mal tanken ?");
   }
 }
