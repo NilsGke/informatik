@@ -4,9 +4,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
-import java.util.TimerTask;
-import java.util.Timer;
-
 
 
 /**
@@ -169,16 +166,7 @@ public class AutoGUI extends JFrame {
   public static void main(String[] args) {
     AutoGUI gui = new AutoGUI();
     gui.updateTable();
-    
-    class printSelected extends TimerTask {
-      public void run() {
-        System.out.println(gui.carTable.getEditingRow()); 
-      }
-    }
 
-    // And From your main() method or any other method
-    Timer timer = new Timer();
-    timer.schedule(new printSelected(), 0, 500);
     
   }
   public void bHinzufuegen_ActionPerformed(ActionEvent evt) {
@@ -191,13 +179,23 @@ public class AutoGUI extends JFrame {
   }
 
   public void bFahren_ActionPerformed(ActionEvent evt) {
-    // TODO hier Quelltext einfügen
-    
+    System.out.println("fahren");
+    int index = Input_AutoIndex.getInt();
+    Auto auto = autos.get(index);
+  
+    double strecke = Input_Strecke.getDouble();
+    auto.fahren(strecke);
+    updateTable();
   }
 
   public void bTanken_ActionPerformed(ActionEvent evt) {
-    // TODO hier Quelltext einfügen
-    
+    System.out.println("tanken");
+    int index = Input_AutoIndex2.getInt();
+    Auto auto = autos.get(index);
+  
+    double menge = Input_Menge.getDouble();
+    auto.tanken(menge);
+    updateTable();
   }
   
   public void updateTable () {
