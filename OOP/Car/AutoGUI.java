@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class AutoGUI extends JFrame {
   // Anfang Attribute
-  private JTable carTable = new JTable(0, 5);
+  private JTable carTable = new JTable(0, 6);
     private DefaultTableModel carTableModel = (DefaultTableModel) carTable.getModel();
   private JScrollPane carTableScrollPane = new JScrollPane(carTable);
   private JLabel lAutos = new JLabel();
@@ -40,9 +40,12 @@ public class AutoGUI extends JFrame {
   private JNumberField Input_AutoIndex2 = new JNumberField();
   private JButton bTanken = new JButton();
   private JLabel lAutoIndex1 = new JLabel();
+  
+  private JLabel lAutoName = new JLabel();
+  private JTextField Input_Name = new JTextField();
   // Ende Attribute
   
-  ArrayList<Auto> autos = new ArrayList<Auto>();
+  ArrayList<Fahrzeug> autos = new ArrayList<Fahrzeug>();
   
   public AutoGUI() { 
     // Frame-Initialisierung
@@ -64,11 +67,12 @@ public class AutoGUI extends JFrame {
     carTableScrollPane.setBounds(31, 97, 684, 422);
     carTable.setRowHeight(25);
     carTable.setAutoCreateRowSorter(false);
-    carTable.getColumnModel().getColumn(0).setHeaderValue("Kennzeichen");
-    carTable.getColumnModel().getColumn(1).setHeaderValue("Kilometerstand");
-    carTable.getColumnModel().getColumn(2).setHeaderValue("Tankvolumen");
-    carTable.getColumnModel().getColumn(3).setHeaderValue("Verbrauch");
-    carTable.getColumnModel().getColumn(4).setHeaderValue("Tankinhalt");
+    carTable.getColumnModel().getColumn(0).setHeaderValue("Name");
+    carTable.getColumnModel().getColumn(1).setHeaderValue("Kennzeichen");
+    carTable.getColumnModel().getColumn(2).setHeaderValue("Kilometerstand");
+    carTable.getColumnModel().getColumn(3).setHeaderValue("Tankvolumen");
+    carTable.getColumnModel().getColumn(4).setHeaderValue("Verbrauch");
+    carTable.getColumnModel().getColumn(5).setHeaderValue("Tankinhalt");
     cp.add(carTableScrollPane);
     lAutos.setBounds(381, 30, 110, 39);
     lAutos.setText("Autos");
@@ -156,9 +160,24 @@ public class AutoGUI extends JFrame {
     lAutoIndex1.setBounds(853, 437, 110, 20);
     lAutoIndex1.setText("Auto (Index)");
     cp.add(lAutoIndex1);
+    
+    lAutoName.setText("Name");
+    lAutoName.setBounds(850, 132, 100, 20);
+    cp.add(lAutoName);
+    
+    Input_Name.setBounds(850, 160, 75, 20);
+    Input_Name.setText("");
+    cp.add(Input_Name);
     // Ende Komponenten
     
     setVisible(true);
+    
+    
+    autos.add(new Fahrzeug("Ford Foggus", "WI NG 123", 56.0, 6.0));
+    autos.add(new Fahrzeug("Farrrarrrii", "MZ TP 456", 50.0, 7.0));
+    autos.add(new Fahrzeug("Smart", "WI DB 789", 45.0, 6.7));
+    
+    
   }
   
   // Anfang Methoden
@@ -166,22 +185,28 @@ public class AutoGUI extends JFrame {
   public static void main(String[] args) {
     AutoGUI gui = new AutoGUI();
     gui.updateTable();
-
     
   }
   public void bHinzufuegen_ActionPerformed(ActionEvent evt) {
     String Kennzeichen = Input_Kennzeichen.getText();
     double Tankvolumen = Input_Tankvolumen.getDouble();
     double Verbrauch = Input_Verbrauch.getDouble();
-    Auto NeuesAuto = new Auto(Kennzeichen, Tankvolumen, Verbrauch);
+    String Name = Input_Name.getText();
+    Fahrzeug NeuesAuto = new Fahrzeug(Name, Kennzeichen, Tankvolumen, Verbrauch);
+    NeuesAuto.vollTanken();
     autos.add(NeuesAuto);
     updateTable();
+    
+    // clear inputs
+    Input_Kennzeichen.setText("");
+    Input_Tankvolumen.clear();
+    Input_Verbrauch.clear();
   }
 
   public void bFahren_ActionPerformed(ActionEvent evt) {
     System.out.println("fahren");
     int index = Input_AutoIndex.getInt();
-    Auto auto = autos.get(index);
+    Fahrzeug auto = autos.get(index);
   
     double strecke = Input_Strecke.getDouble();
     auto.fahren(strecke);
@@ -191,7 +216,7 @@ public class AutoGUI extends JFrame {
   public void bTanken_ActionPerformed(ActionEvent evt) {
     System.out.println("tanken");
     int index = Input_AutoIndex2.getInt();
-    Auto auto = autos.get(index);
+    Fahrzeug auto = autos.get(index);
   
     double menge = Input_Menge.getDouble();
     auto.tanken(menge);
@@ -199,13 +224,18 @@ public class AutoGUI extends JFrame {
   }
   
   public void updateTable () {
+    System.out.println("rows count: " + carTableModel.getRowCount());
+    System.out.println("cars coutn: " + autos.size());
     // clear table
-    for (int i = 0; i < carTableModel.getRowCount(); i++) {
-      carTableModel.removeRow(i);
+    int rowCount = carTableModel.getRowCount();
+    for (int i = 0; i < rowCount; i++) {
+      System.out.println("removing row: " + i);
+      carTableModel.removeRow(0);
     }
     
-    for (Auto auto: autos) {
+    for (Fahrzeug auto: autos) {
       String[] data = new String[]{
+        auto.getName(),
         auto.getKennzeichen(),
         auto.getKilometerstand() + "km",
         auto.getTankvolumen() + "L",
